@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <title>西區青職相調｜報名</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <img class="hero-image" src="assets/hero.webp" alt="灰瓦拱廊與綠樹的建築景致">
+      <div class="hero-content">
+        <h1>西區青職相調</h1>
+        <p class="intro">阿公店水庫・醒村手作・岡山園景觀餐廳</p>
+      </div>
+    </header>
+
+    <section class="panel" aria-labelledby="scheduleTitle">
+      <h2 id="scheduleTitle">當日行程</h2>
+      <ol class="schedule">
+        <li><time>10:00–12:00</time><div><strong>阿公店水庫 (我還會去看一下~ by高br)</strong><small>環湖步道</small></div></li>
+        <li><time>12:00–14:00</time><div><strong>午餐 (到時一起想)</strong><small>樂購廣場?岡山羊肉?</small></div></li>
+        <li><time>14:00–16:00</time><div><strong>醒村 (一定會去~)</strong><small>自由活動及手作體驗</small></div></li>
+        <li><time>16:00–20:00</time><div><strong>岡山園景觀餐廳</strong><small>看日落、相調、晚餐（每桌 $4,000）</small></div></li>
+      </ol>
+    </section>
+
+    <section class="panel" aria-labelledby="signupTitle">
+      <div class="section-row">
+        <h2 id="signupTitle">填寫報名</h2>
+        <button class="secondary" type="button" id="refreshButton">更新名額</button>
+      </div>
+      <p class="note">每位報名者直接在手作介紹卡片內選擇項目。點照片可放大全圖，名額每 15 秒更新。</p>
+      <form id="signupForm">
+        <div class="global-fields">
+          <div class="field">
+            <label for="district">所屬大區（本次報名者共用）</label>
+            <select id="district" required disabled><option value="">載入中…</option></select>
+          </div>
+          <div class="field" id="otherDistrictWrap" hidden>
+            <label for="otherDistrict">其他大區名稱</label>
+            <input id="otherDistrict" type="text" maxlength="30" placeholder="請填寫大區名稱">
+          </div>
+        </div>
+        <div class="people" id="people"></div>
+        <div class="add-row">
+          <button class="secondary" type="button" id="addPerson">＋ 新增報名者</button>
+          <span class="small" id="peopleCount">目前 1 人</span>
+        </div>
+        <section class="estimate" aria-labelledby="estimateTitle">
+          <div class="estimate-head">
+            <h3 id="estimateTitle">報名前｜費用預估試算表</h3>
+            <span class="small">依本次填寫內容即時試算</span>
+          </div>
+          <p class="small estimate-meal" id="dinnerSummary">正在載入晚餐費用資訊…</p>
+          <table class="estimate-table" aria-label="本次報名者費用明細">
+            <thead><tr>
+              <th scope="col">報名者</th><th scope="col">加入行程</th>
+              <th scope="col">手作項目</th><th scope="col">手作費</th>
+              <th scope="col">晚餐預估</th><th scope="col">個人小計</th>
+            </tr></thead>
+            <tbody id="estimateRows"><tr><td colspan="6">資料載入中…</td></tr></tbody>
+          </table>
+          <div class="estimate-total">
+            <span id="estimateTotalLabel">本次報名預估合計</span>
+            <strong id="estimateTotal">計算中…</strong>
+          </div>
+          <p class="estimate-note" id="estimateUnknown" hidden></p>
+          <p class="estimate-note">岡山園每桌 $4,000；報名時晚餐暫以每人 $400 試算，最終依實際開桌數及用餐人數結算。午餐及其他未提供的費用不列入試算。</p>
+          <p class="estimate-warning">本次相調不預先收費，請自行備妥費用。</p>
+        </section>
+        <p class="note" id="capacityNote">每位報名者的手作名額分開計算；額滿後不可新增選擇。</p>
+        <button class="primary" id="submitButton" type="submit" disabled>確認報名</button>
+      </form>
+      <div class="message" id="message" role="status" aria-live="polite" hidden></div>
+    </section>
+    <p class="footer">需要更改、取消報名或調整大區時，請聯絡主辦單位。</p>
+  </main>
+
+  <dialog id="lightbox" class="lightbox" aria-label="手作照片放大檢視">
+    <div class="lightbox-inside">
+      <button type="button" class="lightbox-close" id="lightboxClose" aria-label="關閉照片">×</button>
+      <img id="lightboxImage" alt="完整手作活動照片">
+      <p id="lightboxCaption" class="lightbox-caption"></p>
+    </div>
+  </dialog>
+
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
