@@ -78,6 +78,16 @@
     <p class="footer">需要更改、取消報名或調整大區時，請聯絡主辦單位。</p>
   </main>
 
+  <dialog id="successDialog" class="success-dialog" aria-labelledby="successTitle" aria-describedby="successMessage">
+    <div class="success-dialog-body">
+      <span class="success-mark" aria-hidden="true">✓</span>
+      <h2 id="successTitle">報名完成</h2>
+      <p id="successMessage" class="success-message" role="status"></p>
+      <p class="success-hint">報名資料已確認儲存，無須重複送出。<br>需要更改或取消報名，請聯絡主辦單位。</p>
+      <button type="button" id="successClose" class="primary success-close">完成</button>
+    </div>
+  </dialog>
+
   <dialog id="lightbox" class="lightbox" aria-label="手作照片放大檢視">
     <div class="lightbox-inside">
       <button type="button" class="lightbox-close" id="lightboxClose" aria-label="關閉照片">×</button>
