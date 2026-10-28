@@ -1,0 +1,665 @@
+/* 西區青職相調 · 拱廊與庭園｜全頁視覺系統 */
+:root {
+  --forest:#304d42;
+  --forest-deep:#223b32;
+  --moss:#536a55;
+  --sage:#738b79;
+  --leaf:#e7ede4;
+  --sky:#dce8e9;
+  --limestone:#ede9df;
+  --plaster:#f7f5ef;
+  --paper:#fffefb;
+  --stone:#c6c5b9;
+  --line:#d4d4c9;
+  --ink:#283830;
+  --muted:#66746b;
+  --copper:#ad8c68;
+  --error:#ac3430;
+  --green:var(--forest);
+  --deep:var(--forest-deep);
+  --text:var(--ink);
+  --bg:var(--limestone);
+}
+* {box-sizing:border-box}
+html {background:var(--limestone)}
+body {
+  margin:0;
+  color:var(--ink);
+  background:
+    linear-gradient(90deg,rgba(70,88,76,.026) 1px,transparent 1px) center top/72px 72px,
+    linear-gradient(180deg,#dce8e8 0,#eae9e1 360px,#ede9df 800px);
+  font:16px/1.7 system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+main {width:min(1140px,100%);margin:0 auto;padding:34px 30px 62px}
+h1,h2,h3,p {margin-top:0}
+h1,h2,.estimate-head h3,.person-title {
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+}
+a {color:var(--forest);text-decoration:underline;text-underline-offset:4px}
+button,input,select {font:inherit}
+button {touch-action:manipulation}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible {
+  outline:3px solid #7aaf94;
+  outline-offset:3px;
+}
+[hidden] {display:none!important}
+
+/* 封面不是附加圖片，而是「建築拱廊」的版面起點。 */
+.hero {
+  display:grid;
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);
+  height:410px;
+  min-height:0;
+  margin:0 0 29px;
+  padding:0;
+  overflow:hidden;
+  background:var(--forest-deep);
+  box-shadow:0 18px 48px rgba(30,51,41,.13);
+  border:1px solid rgba(44,72,57,.1);
+}
+.hero-content {
+  grid-column:1;
+  grid-row:1;
+  z-index:1;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  min-width:0;
+  padding:51px 40px 50px 48px;
+  color:#fffdf6;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.035) 0,transparent 80%),
+    var(--forest);
+}
+.hero-content::before {
+  content:"WEST YOUNG WORKING SAINTS  ·  BLENDING";
+  display:block;
+  margin:0 0 34px;
+  padding-bottom:11px;
+  border-bottom:1px solid rgba(236,242,232,.42);
+  color:#dfecdd;
+  font-size:10px;
+  font-family:system-ui,-apple-system,sans-serif;
+  font-weight:650;
+  letter-spacing:.19em;
+}
+.hero-content::after {
+  content:"";
+  position:absolute;
+  right:24px;
+  bottom:0;
+  width:64px;
+  height:96px;
+  border:1px solid rgba(218,233,218,.26);
+  border-bottom:0;
+  border-radius:38px 38px 0 0;
+  pointer-events:none;
+}
+.hero h1 {
+  margin:0 0 23px;
+  max-width:350px;
+  font-size:clamp(34px,4.15vw,50px);
+  font-weight:700;
+  line-height:1.3;
+  letter-spacing:.105em;
+  text-shadow:none;
+}
+.hero .intro {
+  margin:0;
+  padding-top:21px;
+  border-top:1px solid rgba(236,242,232,.32);
+  max-width:335px;
+  color:#ecf3e9;
+  font-size:14px;
+  font-weight:400;
+  line-height:2;
+  letter-spacing:.025em;
+  text-shadow:none;
+}
+.hero-image {
+  grid-column:2;
+  grid-row:1;
+  align-self:end;
+  justify-self:center;
+  position:relative;
+  z-index:0;
+  display:block;
+  width:calc(100% - 48px);
+  height:calc(100% - 42px);
+  max-height:430px;
+  margin:42px 23px 0 25px;
+  object-fit:cover;
+  object-position:51% 54%;
+  border-radius:260px 260px 0 0;
+  filter:saturate(.82) contrast(.98);
+}
+
+/* 行程像一條穿過拱廊的時間軸；不是四個一般列表項目。 */
+.panel {
+  margin-bottom:32px;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+.panel[aria-labelledby="scheduleTitle"] {
+  display:grid;
+  grid-template-columns:242px minmax(0,1fr);
+  gap:32px;
+  margin:0 0 62px;
+  padding:34px 36px;
+  border:1px solid #c8cec3;
+  background:
+    linear-gradient(120deg,rgba(232,237,230,.58) 0%,rgba(249,248,242,.95) 70%),
+    var(--plaster);
+  box-shadow:9px 9px 0 rgba(53,81,65,.055);
+}
+h2 {
+  margin:0;
+  font-size:clamp(24px,2.7vw,32px);
+  line-height:1.42;
+  font-weight:700;
+  letter-spacing:.035em;
+  color:var(--forest-deep);
+}
+#scheduleTitle {
+  position:relative;
+  align-self:start;
+  padding:23px 0 0;
+}
+#scheduleTitle::before {
+  content:"ITINERARY   /   01";
+  position:absolute;
+  top:0;left:0;
+  font:700 10px/1 system-ui,-apple-system,sans-serif;
+  letter-spacing:.15em;
+  color:#7e907e;
+}
+#scheduleTitle::after {
+  content:"";
+  display:block;
+  width:80px;
+  height:87px;
+  margin-top:30px;
+  border:1.5px solid #b2beb0;
+  border-bottom:0;
+  border-radius:45px 45px 0 0;
+  box-shadow:inset 0 0 0 10px var(--plaster),inset 0 0 0 11px #ccd4c7;
+  opacity:.9;
+}
+.schedule {margin:0;padding:0;list-style:none;counter-reset:journey;display:grid}
+.schedule li {
+  counter-increment:journey;
+  display:grid;
+  grid-template-columns:37px 121px minmax(0,1fr);
+  column-gap:13px;
+  align-items:start;
+  min-width:0;
+  padding:15px 0;
+  border-bottom:1px solid #d6d9cf;
+}
+.schedule li:first-child {padding-top:0}
+.schedule li:last-child {padding-bottom:0;border-bottom:0}
+.schedule li::before {
+  content:"0" counter(journey);
+  display:grid;
+  place-items:center;
+  align-self:start;
+  width:29px;
+  height:36px;
+  border:1px solid #9daa9b;
+  border-radius:15px 15px 2px 2px;
+  color:var(--forest);
+  font:650 12px/1 system-ui,-apple-system,sans-serif;
+  letter-spacing:.02em;
+}
+.schedule time {
+  display:block;
+  padding:4px 0 0;
+  color:var(--forest);
+  font-size:13px;
+  font-weight:750;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.schedule strong {display:block;color:var(--ink);font-size:15px;font-weight:720;line-height:1.6}
+.schedule small {display:block;margin-top:3px;color:var(--muted);font-size:13px;line-height:1.65}
+
+/* 第二段：表單擺進與庭園建築一致的石材／紙面層次。 */
+.panel[aria-labelledby="signupTitle"] {
+  position:relative;
+  padding:0;
+  margin:0;
+}
+.section-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-bottom:15px;
+  padding:0 0 17px;
+  border-bottom:2px solid #627b67;
+}
+#signupTitle {position:relative;padding-top:20px}
+#signupTitle::before {
+  content:"REGISTRATION   /   02";
+  position:absolute;
+  top:0;left:0;
+  color:#708370;
+  font:700 10px/1 system-ui,-apple-system,sans-serif;
+  letter-spacing:.15em;
+}
+.note {margin:0 0 17px;color:var(--muted);font-size:13px;line-height:1.75}
+.global-fields {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px 22px;
+  margin:21px 0 24px;
+  padding:21px 24px 8px;
+  border-left:5px solid #8b9a82;
+  background:#e4e7dd;
+}
+.field {min-width:0;margin-bottom:14px}
+.field label {display:block;margin:0 0 7px;color:#384d40;font-size:14px;font-weight:750}
+.field input,.field select {
+  display:block;
+  width:100%;
+  min-width:0;
+  min-height:48px;
+  padding:10px 14px;
+  border:1px solid #c9cec4;
+  border-radius:4px;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.5;
+  box-shadow:inset 0 1px 2px rgba(22,50,31,.025);
+  transition:border-color .16s,box-shadow .16s;
+}
+.field input::placeholder {color:#939e94}
+.field input:focus,.field select:focus {
+  border-color:var(--forest);
+  box-shadow:0 0 0 3px rgba(83,119,95,.09);
+}
+.people {display:grid;gap:22px;margin:0 0 19px}
+.person {
+  position:relative;
+  min-width:0;
+  padding:25px 28px 29px;
+  border:1px solid #c9cdc4;
+  border-top:4px solid #acbbaa;
+  background:var(--paper);
+  box-shadow:5px 7px 0 rgba(69,83,68,.05);
+}
+.person:first-child {border-top-color:var(--forest)}
+.person::after {
+  content:"";
+  position:absolute;
+  top:0;
+  right:32px;
+  width:48px;
+  height:51px;
+  border:1px solid #dae1d6;
+  border-top:0;
+  border-radius:0 0 27px 27px;
+  pointer-events:none;
+  opacity:.6;
+}
+.person-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  min-height:50px;
+  margin-bottom:21px;
+  padding-bottom:15px;
+  border-bottom:1px solid #dedfd5;
+}
+.person-title {
+  position:relative;
+  margin:0;
+  padding-left:17px;
+  color:var(--forest-deep);
+  font-size:22px;
+  line-height:1.4;
+  font-weight:750;
+  letter-spacing:.025em;
+}
+.person-title::before {content:"";position:absolute;left:0;top:7px;width:5px;height:19px;background:#a9baaa}
+.person-fields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}
+.secondary,.remove {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:8px 18px;
+  border:1px solid #aabbab;
+  border-radius:3px;
+  background:#f6f8f3;
+  color:var(--forest-deep);
+  font-size:14px;
+  font-weight:750;
+  cursor:pointer;
+  transition:background-color .15s,transform .15s;
+}
+.secondary:hover:not(:disabled) {background:#dce9db}
+.secondary:active:not(:disabled) {transform:translateY(1px)}
+.remove {min-height:38px;border-color:#d7bfb7;background:#fff7f3;color:#a14840;font-size:13px}
+.remove:hover:not(:disabled) {background:#faece7}
+button:disabled {opacity:.54;cursor:not-allowed}
+.add-row {display:flex;align-items:center;flex-wrap:wrap;gap:13px;margin:3px 0 8px}
+#addPerson {border-color:var(--forest);background:var(--forest);color:#fff}
+#addPerson:hover:not(:disabled) {background:var(--forest-deep)}
+.small {color:var(--muted);font-size:13px}
+
+/* 醒村手作：照片與卡片形成建築拱門，下方是清楚可操作的選擇。 */
+.activity-picker {min-width:0;margin:10px 0 0;padding:21px 0 0;border:0;border-top:1px solid #e1e3d9}
+.activity-picker legend {
+  max-width:100%;
+  margin:0 0 16px;
+  padding:0 8px 0 0;
+  color:var(--forest-deep);
+  font-size:16px;
+  line-height:1.7;
+  font-weight:800;
+}
+.activity-picker .hint {color:var(--muted);font-size:12px;font-weight:450}
+.join-restriction {margin:0 0 13px;color:var(--error);font-size:13px}
+.workshops {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px}
+.workshop {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid #d3d6cd;
+  border-radius:150px 150px 5px 5px;
+  background:#f6f7f2;
+  box-shadow:0 4px 0 rgba(60,75,60,.05);
+  transition:border-color .18s,background-color .18s,box-shadow .18s;
+}
+.workshop:hover:not(.full) {border-color:#9aad9b}
+.workshop.selected {border-color:var(--forest);background:#edf3e9;box-shadow:0 0 0 2px var(--forest)}
+.workshop.full {background:#f1f1eb}
+.workshop.full .choice-body {opacity:.75}
+.workshop.is-none {
+  grid-column:1/-1;
+  border-radius:5px;
+  background:#f1f3ec;
+  box-shadow:none;
+}
+.workshop.is-none .choice-body {padding-bottom:8px}
+.workshop.is-none .choice-description {min-height:0;margin:7px 0 8px}
+.workshop.is-none .choice-main {flex:1}
+.workshop.is-none .choice-select {margin-top:0}
+.choice-main {display:block;min-width:0}
+.choice-media {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:3px;
+  height:225px;
+  overflow:hidden;
+  background:#cbd4ca;
+}
+.choice-media.single {grid-template-columns:minmax(0,1fr)}
+.photo-trigger {
+  position:relative;
+  display:block;
+  width:100%;height:100%;min-width:0;
+  padding:0;border:0;
+  background:#cbd4ca;
+  cursor:zoom-in;
+  overflow:hidden;
+}
+.photo-trigger img {
+  display:block;
+  width:100%;height:100%;min-width:0;
+  object-fit:cover;object-position:center;
+  transition:transform .25s;
+}
+.photo-trigger:hover img {transform:scale(1.035)}
+.photo-trigger::after {
+  content:"點圖放大";
+  position:absolute;
+  right:8px;bottom:8px;
+  padding:4px 9px;
+  background:rgba(34,59,50,.85);
+  color:#fff;
+  font-size:12px;
+  line-height:1.4;
+  pointer-events:none;
+}
+.choice-body {display:block;padding:19px 17px 12px}
+.choice-head {display:flex;align-items:start;justify-content:space-between;gap:10px}
+.choice-name {
+  color:var(--forest-deep);
+  font-size:17px;
+  font-weight:800;
+  line-height:1.5;
+  letter-spacing:.01em;
+}
+.choice-description {display:block;min-height:47px;margin:8px 0 17px;color:#617166;font-size:13px;line-height:1.75}
+.choice-foot {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  padding-top:12px;
+  border-top:1px solid #dbe0d5;
+  font-size:13px;
+}
+.fee {color:#56675a}
+.remaining {color:var(--forest);font-weight:800}
+.workshop.full .remaining {color:var(--error)}
+.choice-links {display:flex;flex-wrap:wrap;gap:7px 14px;padding:2px 17px 13px;font-size:12px;line-height:1.7}
+.choice-links a {color:var(--forest)}
+.choice-select {margin-top:auto;padding:0 13px 15px}
+.activity-radio {position:absolute;width:1px;height:1px;opacity:0}
+.workshop:focus-within {outline:3px solid #9ec1a5;outline-offset:3px}
+.workshop-select {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:48px;
+  padding:10px 12px;
+  border:1px solid #a9baaa;
+  border-radius:3px;
+  background:#ebf0e7;
+  color:var(--forest-deep);
+  font-size:14px;
+  line-height:1.5;
+  font-weight:750;
+  text-align:center;
+  cursor:pointer;
+  transition:background-color .16s,border-color .16s;
+}
+.workshop-select:hover {background:#dbe9da}
+.workshop.selected .workshop-select {border-color:var(--forest);background:var(--forest);color:#fff}
+.workshop.selected .workshop-select:hover {background:var(--forest-deep)}
+.workshop-select .radio-dot {display:inline-block;flex:0 0 auto;width:16px;height:16px;border:2px solid currentColor;border-radius:50%}
+.workshop.selected .workshop-select .radio-dot {border-width:5px}
+.activity-radio:disabled + .workshop-select {opacity:.48;cursor:not-allowed}
+.activity-radio:disabled + .workshop-select:hover {background:#ebf0e7}
+
+/* 費用明細：石材底色＋票據式明細＋墨綠結算，不再像普通表格。 */
+.estimate {
+  position:relative;
+  margin:31px 0 20px;
+  padding:25px 26px 23px;
+  border:1px solid #cfcfc1;
+  border-top:5px solid var(--copper);
+  background:var(--paper);
+  box-shadow:5px 7px 0 rgba(64,80,59,.04);
+}
+.estimate::before {
+  content:"ESTIMATED COST";
+  position:absolute;
+  top:14px;right:25px;
+  color:#a4a697;
+  font:700 10px/1.2 system-ui,-apple-system,sans-serif;
+  letter-spacing:.14em;
+}
+.estimate-head {display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px 15px;margin:0 0 14px;padding:17px 0 13px;border-bottom:1px solid #deded4}
+.estimate-head h3 {margin:0;color:var(--forest-deep);font-size:clamp(19px,2.35vw,25px);line-height:1.4;font-weight:750}
+.estimate-meal {margin:0 0 19px;line-height:1.8}
+.estimate-table {width:100%;border-collapse:collapse;font-size:13px;line-height:1.6}
+.estimate-table th {
+  padding:12px 9px;
+  border-bottom:2px solid #8ca18c;
+  background:#e6ebe1;
+  color:var(--forest-deep);
+  font-weight:800;
+  text-align:left;
+}
+.estimate-table td {padding:14px 9px;border-bottom:1px solid #e0e0d6;background:#fffefb;overflow-wrap:anywhere}
+.estimate-table th:nth-child(n+4),.estimate-table td:nth-child(n+4) {text-align:right}
+.estimate-table .amount {white-space:nowrap}
+.estimate-total {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:7px 16px;
+  margin:21px -26px 0;
+  padding:23px 26px;
+  background:var(--forest);
+  color:#f7f8f1;
+  font-weight:700;
+}
+.estimate-total strong {color:#fffefa;font-size:clamp(25px,3.1vw,34px);line-height:1.3;font-variant-numeric:tabular-nums}
+.estimate-note {margin:14px 0 0;color:#687269;font-size:12px;line-height:1.85}
+.estimate-warning {
+  margin:17px 0 0;
+  padding:13px 15px;
+  border:1px solid #e3bdb5;
+  border-left:5px solid var(--error);
+  background:#fff5f1;
+  color:#a92625;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.6;
+}
+.primary {
+  display:block;
+  width:100%;
+  min-height:58px;
+  margin-top:17px;
+  padding:12px 20px;
+  border:0;
+  border-radius:3px;
+  background:var(--forest);
+  color:#fff;
+  font-size:17px;
+  font-weight:750;
+  letter-spacing:.07em;
+  cursor:pointer;
+  box-shadow:0 5px 0 var(--forest-deep);
+  transition:background-color .17s,transform .17s;
+}
+.primary:hover:not(:disabled) {background:#3a644f}
+.primary:active:not(:disabled) {transform:translateY(2px);box-shadow:0 3px 0 var(--forest-deep)}
+.message {margin:18px 0 0;padding:15px 17px;border-left:4px solid #77977d;background:#edf2e9;color:var(--forest-deep);white-space:pre-line}
+.message.error {border-color:var(--error);background:#fff0eb;color:var(--error)}
+.message.success {border-color:#5a9166;background:#e8f3e5;color:#2b613a}
+.footer {margin-top:37px;padding:23px 0 5px;border-top:1px solid #c4cabe;color:#657365;text-align:center;font-size:12px;line-height:1.8}
+
+/* 原有照片燈箱完整保留。 */
+dialog.lightbox {width:96vw;max-width:min(96vw,1100px);max-height:94dvh;padding:0;border:0;border-radius:5px;background:#15261f;color:#fff;box-shadow:0 20px 80px #0007}
+dialog.lightbox::backdrop {background:#000c}
+.lightbox-inside {position:relative;display:grid;justify-items:center;padding:46px 12px 15px}
+.lightbox img {display:block;width:auto;height:auto;max-width:100%;max-height:calc(94dvh - 112px);object-fit:contain}
+.lightbox-caption {margin:10px 0 0;font-size:13px;text-align:center}
+.lightbox-close {position:absolute;right:9px;top:7px;width:40px;height:40px;border:0;border-radius:50%;background:#ffffff26;color:#fff;font-size:24px;cursor:pointer}
+
+@media(max-width:900px) {
+  main {padding:24px 19px 52px}
+  .hero {height:365px}
+  .hero-content {padding:39px 27px 40px 33px}
+  .hero-image {height:calc(100% - 28px);width:calc(100% - 28px);margin:28px 14px 0}
+  .panel[aria-labelledby="scheduleTitle"] {grid-template-columns:170px minmax(0,1fr);gap:21px;padding:28px}
+  .schedule li {grid-template-columns:31px 113px minmax(0,1fr);gap:9px}
+  .person {padding:24px 22px}
+  .choice-media {height:195px}
+}
+@media(max-width:670px) {
+  body {background:linear-gradient(180deg,#dde8e7 0,#edeae2 500px,#ede9df 100%)}
+  main {padding:11px 11px 38px}
+  .hero {display:grid;grid-template-columns:minmax(0,1fr);height:auto;min-height:0;margin:0 0 18px;box-shadow:0 7px 20px rgba(30,51,41,.1)}
+  .hero-image {
+    grid-column:1;grid-row:1;
+    align-self:end;
+    width:calc(100% - 34px);
+    height:240px;
+    max-height:none;
+    margin:15px 17px 0;
+    border-radius:200px 200px 0 0;
+    object-position:center 47%;
+  }
+  .hero-content {grid-column:1;grid-row:2;min-height:181px;padding:25px 23px 28px;justify-content:center}
+  .hero-content::before {margin:0 0 12px;padding-bottom:0;border-bottom:0;font-size:9px;letter-spacing:.12em}
+  .hero-content::after {width:39px;height:58px;right:21px;opacity:.5}
+  .hero h1 {margin:0 0 10px;font-size:clamp(29px,8vw,39px);letter-spacing:.065em}
+  .hero .intro {padding-top:10px;font-size:13px;line-height:1.65}
+  .panel[aria-labelledby="scheduleTitle"] {display:block;margin:0 0 45px;padding:24px 17px 19px;box-shadow:4px 5px 0 rgba(53,81,65,.04)}
+  #scheduleTitle {margin-bottom:14px;padding-top:19px}
+  #scheduleTitle::after {display:none}
+  .schedule li {grid-template-columns:35px minmax(0,1fr);gap:0 10px;padding:14px 0}
+  .schedule li::before {grid-row:1/span 2;align-self:start}
+  .schedule time {grid-column:2;grid-row:1;padding:0 0 4px;font-size:13px}
+  .schedule li>div {grid-column:2;grid-row:2}
+  .schedule strong {font-size:14px}
+  .schedule small {font-size:12px}
+  .section-row {gap:10px;margin-bottom:13px}
+  h2 {font-size:26px}
+  .global-fields {grid-template-columns:minmax(0,1fr);margin:17px 0 21px;padding:15px 16px 2px;gap:0}
+  .person {padding:20px 14px 23px}
+  .person::after {right:15px;width:31px;height:35px}
+  .person-head {margin-bottom:15px;padding-bottom:14px}
+  .person-title {font-size:20px;padding-left:15px}
+  .person-title::before {height:16px;top:7px}
+  .person-fields,.workshops {grid-template-columns:minmax(0,1fr)}
+  .workshops {gap:17px}
+  .workshop {border-radius:190px 190px 4px 4px}
+  .workshop.is-none {grid-column:auto;border-radius:4px}
+  .choice-media {height:215px}
+  .activity-picker legend {font-size:15px}
+  .activity-picker .hint {display:block;font-size:12px}
+  .estimate {margin:25px 0 16px;padding:21px 13px 17px}
+  .estimate::before {top:9px;right:13px;font-size:9px}
+  .estimate-head {padding-top:15px}
+  .estimate-head h3 {font-size:20px}
+  .estimate-table thead {display:none}
+  .estimate-table tbody {display:grid;gap:11px}
+  .estimate-table tr {display:grid;padding:10px 13px;border:1px solid #d7d9ce;background:#fff}
+  .estimate-table td {
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:13px;
+    padding:5px 0;
+    border:0;
+    background:transparent;
+    text-align:right;
+  }
+  .estimate-table td::before {content:attr(data-label);flex:0 0 76px;color:var(--muted);font-weight:600;text-align:left}
+  .estimate-table td:nth-child(n+4) {text-align:right}
+  .estimate-total {margin:16px -13px 0;padding:19px 15px}
+  .estimate-total strong {font-size:26px}
+  .estimate-warning {padding:11px 12px;font-size:14px}
+  .footer {margin-top:28px}
+}
+@media(min-width:671px) and (max-width:780px) {
+  .workshops {gap:14px}
+  .choice-media {height:170px}
+  .choice-body {padding:15px 13px 12px}
+  .choice-select {padding:0 11px 13px}
+}
+@media(prefers-reduced-motion:reduce) {
+  .secondary,.field input,.field select,.workshop,.photo-trigger img,.workshop-select,.primary {transition:none}
+}
