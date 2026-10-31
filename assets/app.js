@@ -8,8 +8,7 @@
     const districtInput = $('district');
     const otherDistrictInput = $('otherDistrict');
     const joinChoices = [
-      ['10', '10:00 阿公店水庫起'],
-      ['12', '12:00 午餐起'],
+      ['10', '11:00 漯底山自然公園起'],
       ['14', '14:00 醒村起'],
       ['16', '16:00 岡山園起']
     ];
@@ -301,7 +300,6 @@
       updateFormAvailability();
     }
 
-
     class RegistrationError extends Error {}
 
     // GAS ContentService 不提供可供 GitHub Pages 讀取的跨來源 fetch 回應；
@@ -416,7 +414,7 @@
 
     async function onSubmit(event) {
       event.preventDefault();
-      if (!ready || submitting) return;
+      if (!ready || submitting || $('successDialog').open) return;
       if (peopleCards().some(card => !selectedActivityId(card))) {
         showMessage('請為每位報名者直接從手作卡片選擇一項，或選擇「不參加手作」。', 'error');
         return;
@@ -468,6 +466,8 @@
         setPublicStatus(result);
         renumberCards();
         showMessage(notice, 'success');
+        $('successMessage').textContent = notice;
+        $('successDialog').showModal();
       } catch (error) {
         showMessage((error && error.message) || '報名失敗，請稍後重試。', 'error');
       } finally {
@@ -522,6 +522,7 @@
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') refresh();
     });
+    $('successClose').addEventListener('click', () => $('successDialog').close());
     $('lightboxClose').addEventListener('click', () => $('lightbox').close());
     $('lightbox').addEventListener('click', event => {
       if (event.target === $('lightbox')) $('lightbox').close();
