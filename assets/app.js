@@ -15,8 +15,12 @@
     const MAX_PERSONS = 40;
     const API_URL = 'https://script.google.com/macros/s/AKfycbylaNO_bS59MYR1ID0N5AHKjOyVRDsd5Dfu4_5uKqgLEATtm94_P7rrzASFt9uIEGqH8A/exec';
     let jsonpSequence = 0;
-      // 照片來自「手作.docx」，已壓縮內嵌；不依賴外部圖片網址。
+      // 照片由「手作.docx」轉為 assets 內的 WebP 靜態檔，無外部圖片服務依賴。
       const PHOTOS = Object.freeze({
+        honey: [
+          'assets/honey-1.webp',
+          'assets/honey-2.webp'
+        ],
         coffee: [
           'assets/coffee-1.webp',
           'assets/coffee-2.webp'
@@ -134,11 +138,15 @@
           `<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`
         ).join('')}</div>` : '';
         const inputId = `activity_${key}_${id}`;
-        return `<article class="workshop${item.id === 'none' ? ' is-none' : ''}" data-activity="${id}">
+        const recommended = item.id === 'honey';
+        return `<article class="workshop${item.id === 'none' ? ' is-none' : ''}${recommended ? ' is-recommended' : ''}" data-activity="${id}">
           <div class="choice-main">
             ${media}
             <div class="choice-body">
-              <div class="choice-head"><span class="choice-name">${escapeHtml(item.name)}</span></div>
+              <div class="choice-head">
+                <span class="choice-name">${escapeHtml(item.name)}</span>
+                ${recommended ? '<strong class="recommendation-badge">★ 非常推薦 ★</strong>' : ''}
+              </div>
               <span class="choice-description">${escapeHtml(item.description)}</span>
               <div class="choice-foot">
                 <span class="fee">材料費：${escapeHtml(item.fee)}</span>
