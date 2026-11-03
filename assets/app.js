@@ -77,9 +77,11 @@
         </div>
         <div class="person-fields">
           <div class="field"><label for="name_${key}">姓名 <span aria-hidden="true">*</span></label>
-            <input id="name_${key}" class="p-name" type="text" maxlength="30" autocomplete="off" required placeholder="請填姓名"></div>
+            <input id="name_${key}" class="p-name" type="text" maxlength="30" autocomplete="off" required placeholder="請填姓名">
+            <p class="field-error" id="error_name_${key}" role="alert" hidden></p></div>
           <div class="field"><label for="phone_${key}" class="phone-label">聯絡電話</label>
-            <input id="phone_${key}" class="p-phone" type="tel" maxlength="25" autocomplete="off" placeholder="手機或電話"></div>
+            <input id="phone_${key}" class="p-phone" type="tel" maxlength="25" autocomplete="off" placeholder="手機或電話">
+            <p class="field-error" id="error_phone_${key}" role="alert" hidden></p></div>
           <div class="field"><label for="join_${key}">從哪一站加入？</label>
             <select id="join_${key}" class="p-join">${joinChoices.map(([value,label]) =>
               `<option value="${value}">${label}</option>`).join('')}</select></div>
@@ -88,9 +90,10 @@
               <option value="yes">參加晚餐</option><option value="no">不參加晚餐</option>
             </select></div>
         </div>
-        <fieldset class="activity-picker">
-          <legend>選擇醒村手作 <span class="hint">（每人一項；照片可點開看全圖）</span></legend>
-          <p class="join-restriction" hidden>從 16:00 岡山園加入，無法參加 14:00 的手作，已選擇「不參加手作」。</p>
+        <fieldset class="activity-picker" tabindex="-1">
+          <legend>選擇醒村手作 <span class="hint">（每人須選一項，含「不參加手作」；再按已選項可取消。16:00 加入者自動選擇。）</span></legend>
+          <p class="join-restriction" hidden>16:00 從岡山園加入，已自動選擇「不參加手作」，無須另外操作。</p>
+          <p class="field-error" id="error_activity_${key}" role="alert" hidden></p>
           <div class="workshops"><p class="note">正在載入手作資訊…</p></div>
         </fieldset>`;
       peopleElement.appendChild(card);
@@ -117,6 +120,90 @@
     function selectedActivityId(card) {
       const input = card.querySelector('.p-activity:checked');
       return input ? input.value : '';
+    }
+
+    function errorGroup(control) {
+      return control.classList.contains('activity-picker')
+        ? control : control.closest('.field');
+    }
+
+    function clearFieldError(control) {
+      const group = errorGroup(control);
+      if (!group) return;
+      group.classList.remove('is-invalid');
+      const error = group.querySelector('.field-error');
+      if (error) { error.hidden = true; error.textContent = ''; }
+      if (control.hasAttribute('aria-invalid')) control.removeAttribute('aria-invalid');
+      if (error && control.getAttribute('aria-describedby') === error.id) {
+        control.removeAttribute('aria-describedby');
+      }
+    }
+
+    function clearAllFieldErrors() {
+      form.querySelectorAll('.is-invalid').forEach(group => {
+        const control = group.classList.contains('activity-picker')
+          ? group : group.querySelector('input,select');
+        if (control) clearFieldError(control);
+      });
+    }
+
+    function showFieldErrors(errors) {
+      clearAllFieldErrors();
+      if (!errors.length) return false;
+      errors.forEach(({control, message}) => {
+        const group = errorGroup(control);
+        if (!group) return;
+        const error = group.querySelector('.field-error');
+        group.classList.add('is-invalid');
+        control.setAttribute('aria-invalid', 'true');
+        if (error) {
+          error.textContent = message;
+          error.hidden = false;
+          control.setAttribute('aria-describedby', error.id);
+        }
+      });
+      const first = errors[0].control;
+      const group = errorGroup(first) || first;
+      const focusTarget = first.classList.contains('activity-picker')
+        ? first.querySelector('.p-activity:not(:disabled)') || first
+        : first;
+      focusTarget.focus({preventScroll: true});
+      // 手作 fieldset 可能很高，應捲到錯誤提示而不是整個 fieldset 的中間。
+      const scrollTarget = first.classList.contains('activity-picker')
+        ? first.querySelector('.field-error') || first
+        : group;
+      scrollTarget.scrollIntoView({behavior: 'smooth', block: 'center'});
+      showMessage(`尚有 ${errors.length} 項資料需要填寫或修正；已定位至第一個項目。`, 'error');
+      return true;
+    }
+
+    function validateRequiredFields() {
+      const errors = [];
+      const add = (control, message) => errors.push({control, message});
+      if (!districtInput.value) add(districtInput, '請選擇所屬大區。');
+      if (districtInput.value === 'other') {
+        const name = otherDistrictInput.value.trim();
+        if (!name) add(otherDistrictInput, '請填寫其他大區名稱。');
+        else if (/^[=+\-@]/.test(name)) add(otherDistrictInput, '大區名稱不能以特殊符號開頭。');
+      }
+      peopleCards().forEach((card, index) => {
+        const prefix = `報名者 ${index + 1}`;
+        const nameInput = card.querySelector('.p-name');
+        const name = nameInput.value.trim();
+        if (!name) add(nameInput, `${prefix}：請填寫姓名。`);
+        else if (/^[=+\-@]/.test(name)) add(nameInput, `${prefix}：姓名不能以特殊符號開頭。`);
+        const phoneInput = card.querySelector('.p-phone');
+        const phone = phoneInput.value.trim();
+        if (!phone && index === 0) {
+          add(phoneInput, '主報名者：請填寫聯絡電話。');
+        } else if (phone && (!/^[+0-9()\-\s]{7,25}$/.test(phone) || phone.replace(/\D/g, '').length < 7)) {
+          add(phoneInput, `${prefix}：聯絡電話格式不正確，請檢查號碼。`);
+        }
+        if (!selectedActivityId(card)) {
+          add(card.querySelector('.activity-picker'), `${prefix}：請選擇一項手作；不參加也要點選「不參加手作」。`);
+        }
+      });
+      return !showFieldErrors(errors);
     }
 
     function renderPersonWorkshops(person) {
@@ -170,6 +257,21 @@
     function updateFormAvailability() {
       if (!ready) return;
       const cards = peopleCards();
+      // 16:00 加入者直接參加晚餐且不參加手作；這裡是唯一的自動選擇來源，
+      // 可涵蓋切換加入時間、重新載入卡片與名額更新，不需手動點選。
+      cards.forEach(card => {
+        const onlyDinner = card.querySelector('.p-join').value === '16';
+        const dinnerInput = card.querySelector('.p-dinner');
+        dinnerInput.disabled = onlyDinner;
+        if (onlyDinner) {
+          dinnerInput.value = 'yes';
+          const none = card.querySelector('.p-activity[value="none"]');
+          if (none && !none.checked) {
+            none.checked = true;
+            clearFieldError(card.querySelector('.activity-picker'));
+          }
+        }
+      });
       const counts = Object.create(null);
       cards.forEach(card => {
         const selected = selectedActivityId(card);
@@ -191,6 +293,8 @@
             (available || selected === item.id);
           input.disabled = !selectable;
           const choice = input.closest('.workshop');
+          // 16:00 才加入者只能選「不參加手作」，直接隱藏其他無法參加的卡片。
+          choice.hidden = onlyDinner && item.id !== 'none';
           const chosen = selected === item.id;
           choice.classList.toggle('selected', chosen);
           choice.classList.toggle('full', !available && !chosen && item.capacity !== null);
@@ -203,7 +307,7 @@
       });
       $('capacityNote').textContent = short
         ? '目前這批報名者選擇的人數超過剩餘手作名額，請調整後再送出。'
-        : '每位報名者請在卡片中選擇一項手作或「不參加手作」，送出前會再次核對名額。';
+        : '每位報名者須選一項手作或「不參加手作」；16:00 加入者已自動選擇不參加手作。送出前會再次核對名額。';
       $('capacityNote').style.color = short ? 'var(--error)' : '';
       if (!submitting) submitButton.disabled = !ready || short;
       renderEstimate();
@@ -270,14 +374,8 @@
     }
 
     function onCardChange(card, target) {
-      if (target.classList.contains('p-join')) {
-        const onlyDinner = target.value === '16';
-        if (onlyDinner) {
-          card.querySelector('.p-dinner').value = 'yes';
-          const none = card.querySelector('.p-activity[value="none"]');
-          if (none) none.checked = true;
-        }
-        card.querySelector('.p-dinner').disabled = onlyDinner;
+      if (target.classList.contains('p-activity')) {
+        clearFieldError(card.querySelector('.activity-picker'));
       }
       updateFormAvailability();
     }
@@ -290,6 +388,8 @@
     }
 
     function toggleOtherDistrict() {
+      clearFieldError(districtInput);
+      clearFieldError(otherDistrictInput);
       const extra = districtInput.value === 'other';
       $('otherDistrictWrap').hidden = !extra;
       otherDistrictInput.required = extra;
@@ -423,11 +523,8 @@
     async function onSubmit(event) {
       event.preventDefault();
       if (!ready || submitting || $('successDialog').open) return;
-      if (peopleCards().some(card => !selectedActivityId(card))) {
-        showMessage('請為每位報名者直接從手作卡片選擇一項，或選擇「不參加手作」。', 'error');
-        return;
-      }
-      if (!form.reportValidity()) return;
+      // 主動驗證並移動到第一個未填區塊；避免原生驗證攔截 submit 事件。
+      if (!validateRequiredFields()) return;
       const people = peopleCards().map(card => ({
         name: card.querySelector('.p-name').value.trim(),
         phone: card.querySelector('.p-phone').value.trim(),
@@ -468,6 +565,7 @@
         retry = null;
         const notice = result.message;
         form.reset();
+        clearAllFieldErrors();
         toggleOtherDistrict();
         peopleElement.replaceChildren();
         createCard();
@@ -490,6 +588,17 @@
     }
 
     peopleElement.addEventListener('click', event => {
+      const selectLabel = event.target.closest('.workshop-select');
+      if (selectLabel) {
+        event.preventDefault(); // Prevent the label's native radio action; checked radios do not uncheck natively.
+        const input = selectLabel.previousElementSibling;
+        if (!submitting && input && input.classList.contains('p-activity') && !input.disabled) {
+          input.checked = !input.checked;
+          clearFieldError(input.closest('.activity-picker'));
+          updateFormAvailability();
+        }
+        return;
+      }
       const photo = event.target.closest('[data-photo]');
       if (photo) {
         const activity = photo.dataset.photo;
@@ -516,7 +625,21 @@
       const card = event.target.closest('.person');
       if (card) onCardChange(card, event.target);
     });
+    peopleElement.addEventListener('keydown', event => {
+      // 鍵盤操作與滑鼠一致：已選取的 radio 再按空白鍵可取消。
+      const input = event.target.closest('.p-activity');
+      if (!input || input.disabled || submitting) return;
+      if ((event.code === 'Space' || event.key === ' ') && input.checked) {
+        event.preventDefault();
+        input.checked = false;
+        clearFieldError(input.closest('.activity-picker'));
+        updateFormAvailability();
+      }
+    });
     peopleElement.addEventListener('input', event => {
+      if (event.target.classList.contains('p-name') || event.target.classList.contains('p-phone')) {
+        clearFieldError(event.target);
+      }
       if (event.target.classList.contains('p-name')) renderEstimate();
     });
     $('addPerson').addEventListener('click', () => {
@@ -525,6 +648,7 @@
       card.querySelector('.p-name').focus();
     });
     districtInput.addEventListener('change', toggleOtherDistrict);
+    otherDistrictInput.addEventListener('input', () => clearFieldError(otherDistrictInput));
     refreshButton.addEventListener('click', refresh);
     form.addEventListener('submit', onSubmit);
     document.addEventListener('visibilitychange', () => {

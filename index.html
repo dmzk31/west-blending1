@@ -26,6 +26,30 @@
       letter-spacing: .02em;
     }
 
+
+
+    /* 表單驗證：未完成欄位與手作選擇顯示同一種提示層級。 */
+    .field.is-invalid input, .field.is-invalid select {
+      border-color: #b52d32;
+      background: #fffaf8;
+      box-shadow: 0 0 0 2px rgba(181,45,50,.12);
+    }
+    .field-error {
+      margin: 7px 0 0;
+      color: #a52229;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.6;
+    }
+    .activity-picker.is-invalid {
+      padding: 18px 14px 14px;
+      border: 2px solid #b52d32;
+      border-radius: 6px;
+      background: #fff8f7;
+    }
+    .activity-picker.is-invalid legend { color: #a52229; }
+    .activity-picker > .field-error { margin: 0 0 13px; }
+
     /* 報名成功彈窗：保留原有互動流程，補齊獨立視覺樣式。 */
     dialog.success-dialog {
       width: min(90vw, 440px);
@@ -71,9 +95,9 @@
       <h2 id="scheduleTitle">當日行程</h2>
       <ol class="schedule">
         <li><time>11:00–12:00</time><div><strong>漯底山自然公園</strong><small> 登山步道、籃球、羽球。『漯』讀ㄊㄚˋ或ㄌㄨㄛˋ。</small></div></li>
-        <li><time>12:00–13:00</time><div><strong>野餐</strong><small></small></div></li>
+        <li><time>12:00–13:00</time><div><strong>野餐</strong><small>暫定（除非找到適合地方）</small></div></li>
         <li><time>14:00–16:00</time><div><strong>醒村</strong><small>自由活動及手作體驗（有一個CP值超高的體驗還在接洽中）</small></div></li>
-        <li><time>16:00–20:00</time><div><strong>岡山園景觀餐廳</strong><small>賞日落、吃晚餐、相調活動、觀夜景</small></div></li>
+        <li><time>16:00–20:00</time><div><strong>岡山園景觀餐廳</strong><small>日落、晚餐、相調、夜景（每桌 $4,000）</small></div></li>
       </ol>
     </section>
 
@@ -83,15 +107,17 @@
         <button class="secondary" type="button" id="refreshButton">更新名額</button>
       </div>
       <p class="note">每位報名者直接在手作介紹卡片內選擇項目。點照片可放大全圖，名額每 15 秒更新。</p>
-      <form id="signupForm">
+      <form id="signupForm" novalidate>
         <div class="global-fields">
           <div class="field">
             <label for="district">所屬大區</label>
             <select id="district" required disabled><option value="">載入中…</option></select>
+            <p class="field-error" id="error_district" role="alert" hidden></p>
           </div>
           <div class="field" id="otherDistrictWrap" hidden>
             <label for="otherDistrict">其他大區名稱</label>
             <input id="otherDistrict" type="text" maxlength="30" placeholder="請填寫大區名稱">
+            <p class="field-error" id="error_otherDistrict" role="alert" hidden></p>
           </div>
         </div>
         <div class="people" id="people"></div>
@@ -147,6 +173,6 @@
     </div>
   </dialog>
 
-  <script src="assets/app.js?v=20261102-honey1" defer></script>
+  <script src="assets/app.js?v=20261103-auto16" defer></script>
 </body>
 </html>
